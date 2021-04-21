@@ -26,13 +26,7 @@ public class AIAPIFile {
     public AIAPIFile() {
         if (refactorFileTextIntoString()) {
             structureTimeList();
-//            convertJsonDataIntoAIBusModelHashMap();
         }
-    }
-
-    //getter
-    public HashMap<String, AIBusDataModel> getAIBusModelHashMap() {
-        return AIBusModelHashMap;
     }
 
     //rewrite file method
@@ -73,7 +67,6 @@ public class AIAPIFile {
 
         if (jsonObject != null) {
             array = jsonObject.getAsJsonArray("allBusData");
-            System.out.println("AIAPIFile 76, js arr " + array);
             for (JsonElement jsonObject : array) {
                 try {
                     list.add(jsonObject.getAsJsonObject());
@@ -81,10 +74,7 @@ public class AIAPIFile {
                     exception.getCause();
                 }
             }
-        } else {
-            System.out.println("AIAPIFILE 79, nope, json is empty");
         }
-        System.out.println("AIAPIFILE 88, get jsonobj list size = " + list);
         AIBusDataModels = list;
     }
 
@@ -92,28 +82,12 @@ public class AIAPIFile {
         return isEmpty;
     }
 
-//    public void convertJsonDataIntoAIBusModelHashMap() {
-//        System.out.println(AIBusDataModels);
-//        try {
-//            for (JsonObject object : Objects.requireNonNull(AIBusDataModels)) {//O(n)
-//                AIBusModelHashMap.put(
-//                        object.get("TsCode").getAsString(),
-//                        new AIBusDataModel(
-//                                object.get("TsCode").getAsString(),
-//                                getAIBusDataAtMinuteModelList(array,object.get("TsCode").getAsString())));
-//            }
-//        } catch (NullPointerException e) {
-//            System.out.println("null exeption convertJsonDataIntoAIBusModelHashMap(), AIAPIFile 94");
-//        }
-//    }
-
     public HashMap<String, List<AIBusDataAtMinuteModel>> getFromFileData() {
         HashMap<String, List<AIBusDataAtMinuteModel>> data = new HashMap<>();
         for (JsonObject object : Objects.requireNonNull(AIBusDataModels)) {//O(n)
             data.put(
                     object.get("TsCode").getAsString(),
                     getAIBusDataAtMinuteModelList(object.getAsJsonArray("busDataAtMinutes"), object.get("TsCode").getAsString()));
-//            System.out.println("AIAPIFile 117, arr " + object.getAsJsonArray("busDataAtMinutes"));
         }
         return data;
     }
@@ -132,21 +106,10 @@ public class AIAPIFile {
                         ));
 
 
-            } 
-//            for (JsonElement arr : jsonObject.getAsJsonArray()) {// loop for jsonArray("busDataAtMinutes)
-//                System.out.println("127 ");
-//                busDataAtMinutes.add(
-//                        new AIBusDataAtMinuteModel(
-//                                arr.getAsJsonObject().get("date").getAsString(),
-//                                arr.getAsJsonObject().get("Longitude").getAsDouble(),
-//                                arr.getAsJsonObject().get("Latitude").getAsDouble()
-//                        ));
-//                System.out.println("AI 135 " + arr.getAsJsonObject().get("date").getAsString());
-//            }
+            }
         } catch (NumberFormatException | NullPointerException exception) {
             exception.getCause();
         }
-//        System.out.println("AIAPIFile 140, busdata size " + busDataAtMinutes.size());
         return busDataAtMinutes;
     }
 

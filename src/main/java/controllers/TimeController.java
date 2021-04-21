@@ -12,11 +12,8 @@ import java.util.*;
 public class TimeController implements Runnable {
     private final BusService busService = new BusService();
     private final List<AIBusDataModel> allBusData = new ArrayList<>();
-
-    private List<AIBusDataAtMinuteModel> busDataAtMinuteLis = new ArrayList<>();
-//    String tscode = "A266";
-
-    HashMap<String, List<AIBusDataAtMinuteModel>> data;
+    private final List<AIBusDataAtMinuteModel> busDataAtMinuteLis = new ArrayList<>();
+    private HashMap<String, List<AIBusDataAtMinuteModel>> data;
 
     public TimeController() {
     }
@@ -45,18 +42,18 @@ public class TimeController implements Runnable {
             }
         } else {
             data = busService.getDataFromFile();
-            System.out.println("48 !"+data.get("A409").get(0).toString());
             try {
-             for (String code : newData.keySet()) {
-                 System.out.println("new data "+data.get(code).size());
-                 data.get(code).add(newData.get(code));
-             }
-                System.out.println("53 ! "+data.get("A409").toString());
-         }catch (NullPointerException e){
-             e.getMessage();
-         }
-
-
+                for (String code : newData.keySet()) {
+                    //10 min case checker
+                    if (data.get(code).size() >= 10) {
+                        data.get(code).remove(0);
+                    }
+                    //
+                    data.get(code).add(newData.get(code));
+                }
+            } catch (NullPointerException e) {
+                e.getMessage();
+            }
         }
     }
 
@@ -67,13 +64,10 @@ public class TimeController implements Runnable {
                     data.get(code)
             ));
         }
-        System.out.println("TimeController 61 allBusData size " + allBusData.size());
-
     }
 
     //getter
     public List<AIBusDataModel> getAllBusData() {
-
         return allBusData;
     }
 }

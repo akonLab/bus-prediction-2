@@ -19,9 +19,7 @@ public class BusService {
     public BusService() {
     }
 
-
-//from file
-
+    //from file
     public HashMap<String, List<AIBusDataAtMinuteModel>> getDataFromFile() {
         return aiapiFile.getFromFileData();
     }
@@ -47,7 +45,6 @@ public class BusService {
     }
 
     public void saveAIBusModelToAIFile(List<AIBusDataModel> list) {
-        System.out.println("BusService 50, size "+list.size());
         aiapiFile.rewriteAIFile(list);
     }
 }
